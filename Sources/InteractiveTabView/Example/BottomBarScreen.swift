@@ -28,7 +28,7 @@ fileprivate let tabItems = [
     TabItem(id: 4, title: "Trend"),
 ]
 
-struct TopBarScreen: View {
+struct BottomBarScreen: View {
     @State var selectedID: Int? = 0
     @State var interaction: InteractiveTabViewInteraction? = nil
     
@@ -51,25 +51,27 @@ struct TopBarScreen: View {
         .onInteractionChange {
             self.interaction = $0
         }
-        .safeAreaInset(edge: .top) {
+        .safeAreaInset(edge: .bottom) {
             VStack(spacing: 0) {
+                Divider()
+                
                 InteractiveTabBar(
                     selection: self.$selectedID,
                     interaction: self.interaction,
-                    spacing: 8,
+                    spacing: 0,
                     tabs: tabItems,
                     content: { item in
                         Text(item.title)
-                            .font(.headline)
+                            .fontWeight(.bold)
                             .foregroundColor(
                                 item.id == self.selectedID ? Color.primary : Color.primary.opacity(0.25)
                             )
                             .padding(.vertical)
                     }
                 )
-                .background(.ultraThinMaterial)
-                
-                Divider()
+                .background(
+                    Color(uiColor: .systemBackground)
+                )
             }
         }
         .animation(.easeInOut, value: self.selectedID)
@@ -77,5 +79,5 @@ struct TopBarScreen: View {
 }
 
 #Preview {
-    TopBarScreen()
+    BottomBarScreen()
 }

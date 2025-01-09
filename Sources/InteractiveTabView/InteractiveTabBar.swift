@@ -17,6 +17,8 @@ fileprivate struct TabButtonFrameKey<ID: Hashable>: PreferenceKey {
 
 public struct InteractiveTabBar<TabItem: Identifiable, Content: View>: View {
     @Binding var selection: TabItem.ID?
+    
+    let spacing: CGFloat
 
     let tabs: [TabItem]
 
@@ -27,10 +29,12 @@ public struct InteractiveTabBar<TabItem: Identifiable, Content: View>: View {
     public init(
         selection: Binding<TabItem.ID?>,
         interaction: InteractiveTabViewInteraction?,
+        spacing: CGFloat = 0,
         tabs: [TabItem],
         @ViewBuilder content: @escaping (TabItem) -> Content
     ) {
         self._selection = selection
+        self.spacing = spacing
         self.interaction = interaction
         self.tabs = tabs
         self.content = content
@@ -39,7 +43,7 @@ public struct InteractiveTabBar<TabItem: Identifiable, Content: View>: View {
     public var body: some View {
         ScrollViewReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 0) {
+                HStack(spacing: self.spacing) {
                     ForEach(self.tabs) { tab in
                         Button(action: { self.selection = tab.id }) {
                             self.content(tab)
@@ -75,8 +79,6 @@ public struct InteractiveTabBar<TabItem: Identifiable, Content: View>: View {
                         .fill(Color.accentColor)
                         .frame(width: indicatorWidth, height: 3)
                         .position(x: indicatorX, y: proxy.size.height - 1.5)
-                } else {
-                    Text("Error!")
                 }
             }
         }
