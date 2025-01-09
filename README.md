@@ -1,5 +1,8 @@
 # InteractiveTabView
 
+<img src="https://github.com/user-attachments/assets/9cc62277-5387-4ea5-be81-b7ae430c8fbc" width="300px">
+
+
 **InteractiveTabView** is a SwiftUI component for iOS 17 and above that synchronizes a tab-bar indicator with each tab’s scrolling content.
 It provides two components, `InteractiveTabView` and `InteractiveTabBar`, allowing you to implement interactive tab navigation with simple SwiftUI APIs.
 
