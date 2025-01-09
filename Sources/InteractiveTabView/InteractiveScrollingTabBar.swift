@@ -15,7 +15,7 @@ fileprivate struct TabButtonFrameKey<ID: Hashable>: PreferenceKey {
     }
 }
 
-public struct InteractiveTabBar<TabItem: Identifiable, Content: View>: View {
+public struct InteractiveScrollingTabBar<TabItem: Identifiable, Content: View>: View {
     @Binding var selection: TabItem.ID?
     
     let spacing: CGFloat
@@ -115,34 +115,29 @@ public struct InteractiveTabBar<TabItem: Identifiable, Content: View>: View {
 fileprivate struct Tab: Identifiable {
     let id: Int
     let title: String
-    let color: Color
 }
 
 #Preview {
     @Previewable @State var selectedID: Int? = 0
-    @Previewable @State var interaction: InteractiveTabViewInteraction = InteractiveTabViewInteraction(
-        currentIndex: 0,
-        nextIndex: 1,
-        fraction: 0.3
-    )
     
     let tabs = [
-        Tab(id: 0, title: "Tab 1", color: .red),
-        Tab(id: 1, title: "Tab 2", color: .green),
-        Tab(id: 2, title: "Tab 3", color: .blue),
-        Tab(id: 3, title: "Tab 4", color: .yellow),
-        Tab(id: 4, title: "Tab 5", color: .orange),
-        Tab(id: 5, title: "Tab 6", color: .purple),
+        Tab(id: 0, title: "Tab 1"),
+        Tab(id: 1, title: "Tab 2"),
+        Tab(id: 2, title: "Tab 3"),
+        Tab(id: 3, title: "Tab 4"),
+        Tab(id: 4, title: "Tab 5"),
+        Tab(id: 5, title: "Tab 6"),
     ]
     
     
-    InteractiveTabBar(
+    InteractiveScrollingTabBar(
         selection: $selectedID,
-        interaction: interaction,
+        interaction: nil,
         tabs: tabs,
-        content: { tab in
-            Text(tab.title)
-                .padding()
+        content: { item in
+            Text(item.title)
+                .font(.headline)
+                .padding(.vertical)
         }
     )
 }

@@ -7,12 +7,6 @@
 
 import SwiftUI
 
-public struct InteractiveTabViewInteraction {
-    public let currentIndex: Int
-    public let nextIndex: Int
-    public let fraction: CGFloat
-}
-
 fileprivate struct PageGeometoryData<ID: Hashable & Sendable>: Equatable, Sendable {
     let tabId: ID
     let offset: CGFloat

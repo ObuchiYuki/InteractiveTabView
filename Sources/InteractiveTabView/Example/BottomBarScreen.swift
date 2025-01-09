@@ -55,7 +55,7 @@ struct BottomBarScreen: View {
             VStack(spacing: 0) {
                 Divider()
                 
-                InteractiveTabBar(
+                InteractiveScrollingTabBar(
                     selection: self.$selectedID,
                     interaction: self.interaction,
                     spacing: 0,

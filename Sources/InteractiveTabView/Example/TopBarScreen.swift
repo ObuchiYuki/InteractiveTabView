@@ -26,7 +26,7 @@ struct TopBarScreen: View {
     
     var body: some View {
         VStack {
-            InteractiveTabBar(
+            InteractiveScrollingTabBar(
                 selection: self.$selectedID,
                 interaction: self.interaction,
                 tabs: tabItems,
