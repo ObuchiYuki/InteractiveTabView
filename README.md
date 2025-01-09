@@ -26,8 +26,6 @@ https://github.com/ObuchiYuki/InteractiveTabView
 Below is an example showing how to provide an array of tab items and display corresponding content. The `InteractiveTabBar` animates the indicator in sync with scroll events.
 
 ```swift
-import InteractiveTabView
-
 struct TabItem: Identifiable {
     let id: Int
     let title: String
