@@ -23,12 +23,12 @@ https://github.com/ObuchiYuki/InteractiveTabView
 以下の例では、タブアイテムの配列を渡して、それぞれに対応するコンテンツを表示しています。タブバーは `InteractiveTabBar` で構築し、スクロールに合わせてインジケータが動きます。
 
 ```swift
-fileprivate struct TabItem: Identifiable {
+struct TabItem: Identifiable {
     let id: Int
     let title: String
 }
 
-fileprivate let tabItems = [
+let tabItems = [
     TabItem(id: 0, title: "Recommend"),
     TabItem(id: 1, title: "Following"),
     TabItem(id: 2, title: "Popular"),
