@@ -44,28 +44,12 @@ struct TopBarScreen: View {
     @State var interaction: InteractiveTabViewInteraction? = nil
     
     var body: some View {
-        InteractiveTabView(
-            selection: self.$selectedID,
-            tabs: tabItems
-        ) { item in
-            ScrollView {
-                ForEach(0..<40, id: \.self) { i in
-                    Text("Item \(i)")
-                        .padding()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-            }
-        }
-        .onInteractionChange {
-            self.interaction = $0
-        }
-        .safeAreaInset(edge: .top) {
-            VStack(spacing: 0) {
-                InteractiveTabBar(
-                    selection: self.$selectedID,
-                    interaction: self.interaction,
-                    tabs: tabItems
-                ) { item in
+        VStack {
+            InteractiveTabBar(
+                selection: self.$selectedID,
+                interaction: self.interaction,
+                tabs: tabItems,
+                content: { item in
                     Text(item.title)
                         .font(.headline)
                         .foregroundColor(
@@ -73,16 +57,29 @@ struct TopBarScreen: View {
                         )
                         .padding(.vertical)
                 }
-                .background(.ultraThinMaterial)
-                
-                Divider()
+            )
+            
+            InteractiveTabView(
+                selection: self.$selectedID,
+                tabs: tabItems,
+                content: { item in
+                    ScrollView {
+                        VStack {
+                            ForEach(0..<40, id: \.self) { i in
+                                Text("Item \(i)")
+                                    .padding()
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                        }
+                    }
+                }
+            )
+            .onInteractionChange {
+                self.interaction = $0
             }
         }
+        .animation(.easeInOut, value: self.selectedID)
     }
-}
-
-#Preview {
-    TopBarScreen()
 }
 ```
 

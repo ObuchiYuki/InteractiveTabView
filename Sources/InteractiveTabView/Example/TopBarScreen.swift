@@ -25,43 +25,38 @@ struct TopBarScreen: View {
     @State var interaction: InteractiveTabViewInteraction? = nil
     
     var body: some View {
-        InteractiveTabView(
-            selection: self.$selectedID,
-            tabs: tabItems,
-            content: { item in
-                ScrollView {
-                    VStack {
-                        ForEach(0..<40, id: \.self) { i in
-                            Text("Item \(i)")
-                                .padding()
-                                .frame(maxWidth: .infinity, alignment: .leading)
+        VStack {
+            InteractiveTabBar(
+                selection: self.$selectedID,
+                interaction: self.interaction,
+                tabs: tabItems,
+                content: { item in
+                    Text(item.title)
+                        .font(.headline)
+                        .foregroundColor(
+                            item.id == self.selectedID ? Color.primary : Color.primary.opacity(0.25)
+                        )
+                        .padding(.vertical)
+                }
+            )
+            
+            InteractiveTabView(
+                selection: self.$selectedID,
+                tabs: tabItems,
+                content: { item in
+                    ScrollView {
+                        VStack {
+                            ForEach(0..<40, id: \.self) { i in
+                                Text("Item \(i)")
+                                    .padding()
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
                         }
                     }
                 }
-            }
-        )
-        .onInteractionChange {
-            self.interaction = $0
-        }
-        .safeAreaInset(edge: .top) {
-            VStack(spacing: 0) {
-                InteractiveTabBar(
-                    selection: self.$selectedID,
-                    interaction: self.interaction,
-                    spacing: 8,
-                    tabs: tabItems,
-                    content: { item in
-                        Text(item.title)
-                            .font(.headline)
-                            .foregroundColor(
-                                item.id == self.selectedID ? Color.primary : Color.primary.opacity(0.25)
-                            )
-                            .padding(.vertical)
-                    }
-                )
-                .background(.ultraThinMaterial)
-                
-                Divider()
+            )
+            .onInteractionChange {
+                self.interaction = $0
             }
         }
         .animation(.easeInOut, value: self.selectedID)

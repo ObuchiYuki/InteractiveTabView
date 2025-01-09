@@ -29,7 +29,7 @@ public struct InteractiveTabBar<TabItem: Identifiable, Content: View>: View {
     public init(
         selection: Binding<TabItem.ID?>,
         interaction: InteractiveTabViewInteraction?,
-        spacing: CGFloat = 0,
+        spacing: CGFloat = 8,
         tabs: [TabItem],
         @ViewBuilder content: @escaping (TabItem) -> Content
     ) {
