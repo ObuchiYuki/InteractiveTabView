@@ -1,5 +1,7 @@
 # InteractiveTabView
 
+<img src="https://github.com/user-attachments/assets/9cc62277-5387-4ea5-be81-b7ae430c8fbc" width="300px">
+
 ### 概要
 **InteractiveTabView** は、iOS 17 以上で動作する SwiftUI コンポーネントです。スクロール操作に合わせて、タブバーのインジケータがインタラクティブに移動します。
 `InteractiveTabView` と `InteractiveTabBar` の 2 つを提供しており、シンプルな API でタブとコンテンツの連動を実現できます。
