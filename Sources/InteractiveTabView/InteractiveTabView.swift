@@ -10,23 +10,7 @@ import SwiftUI
 public struct InteractiveTabViewInteraction {
     public let currentIndex: Int
     public let nextIndex: Int
-    public let fraction: CGFloat // -0.5 ... 0.5
-    
-    public init() {
-        self.currentIndex = 0
-        self.nextIndex = 0
-        self.fraction = 0
-    }
-    
-    public init(
-        currentIndex: Int,
-        nextIndex: Int,
-        fraction: CGFloat
-    ) {
-        self.currentIndex = currentIndex
-        self.nextIndex = nextIndex
-        self.fraction = fraction
-    }
+    public let fraction: CGFloat
 }
 
 fileprivate struct PageGeometoryData<ID: Hashable & Sendable>: Equatable, Sendable {
