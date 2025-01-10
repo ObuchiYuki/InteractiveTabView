@@ -54,11 +54,12 @@ struct BottomBarScreen: View {
         .safeAreaInset(edge: .bottom) {
             VStack(spacing: 0) {
                 Divider()
-                
+                Spacer()
+                    .frame(height: 8)
                 InteractiveScrollingTabBar(
                     selection: self.$selectedID,
                     interaction: self.interaction,
-                    spacing: 0,
+                    indicatorPosition: .top,
                     tabs: tabItems,
                     content: { item in
                         Text(item.title)
@@ -69,10 +70,8 @@ struct BottomBarScreen: View {
                             .padding(.vertical)
                     }
                 )
-                .background(
-                    Color(uiColor: .systemBackground)
-                )
             }
+            .background(.ultraThinMaterial)
         }
         .animation(.easeInOut, value: self.selectedID)
     }

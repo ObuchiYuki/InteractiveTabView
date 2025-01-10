@@ -13,9 +13,8 @@ fileprivate struct TabItem: Identifiable {
 }
 
 fileprivate let tabItems = [
-    TabItem(id: 0, title: "Calories"),
-    TabItem(id: 1, title: "PFC"),
-    TabItem(id: 2, title: "Weight"),
+    TabItem(id: 0, title: "History"),
+    TabItem(id: 1, title: "Favorite"),
 ]
 
 struct NestedTabScreen: View {
@@ -25,12 +24,18 @@ struct NestedTabScreen: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                LazyVStack(pinnedViews: [.sectionHeaders]) {
-                    ForEach(0..<5, id: \.self) { i in
-                        Text("Item \(i)")
-                            .padding()
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }
+                LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
+                    Color.primary
+                        .frame(height: 200)
+                        .cornerRadius(10)
+                        .padding(.horizontal)
+                        .padding(.top, 10)
+                    
+                    Color.primary.opacity(0.05)
+                        .frame(height: 38)
+                        .cornerRadius(10)
+                        .padding(.horizontal)
+                        .padding(.top, 10)
                     
                     Section(content: {
                         InteractiveTabView(
@@ -73,7 +78,6 @@ struct NestedTabScreen: View {
                 .animation(.easeInOut, value: self.selectedID)
                 .navigationBarTitle("Nested Tab View")
                 .toolbarBackground(Color(.systemBackground), for: .navigationBar)
-                .toolbarBackground(.visible, for: .navigationBar)
             }
         }
     }

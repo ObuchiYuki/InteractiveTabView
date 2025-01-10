@@ -18,24 +18,28 @@ fileprivate struct TabButtonFrameKey<ID: Hashable>: PreferenceKey {
 public struct InteractiveScrollingTabBar<TabItem: Identifiable, Content: View>: View {
     @Binding var selection: TabItem.ID?
     
+    let interaction: InteractiveTabViewInteraction?
+    
+    let indicatorPosition: InteractiveTabBarIndicatorPosition
+    
     let spacing: CGFloat
 
     let tabs: [TabItem]
 
     let content: (TabItem) -> Content
 
-    let interaction: InteractiveTabViewInteraction?
-
     public init(
         selection: Binding<TabItem.ID?>,
         interaction: InteractiveTabViewInteraction?,
-        spacing: CGFloat = 8,
+        indicatorPosition: InteractiveTabBarIndicatorPosition = .bottom,
+        spacing: CGFloat = 12,
         tabs: [TabItem],
         @ViewBuilder content: @escaping (TabItem) -> Content
     ) {
         self._selection = selection
-        self.spacing = spacing
+        self.indicatorPosition = indicatorPosition
         self.interaction = interaction
+        self.spacing = spacing
         self.tabs = tabs
         self.content = content
     }
@@ -43,20 +47,20 @@ public struct InteractiveScrollingTabBar<TabItem: Identifiable, Content: View>: 
     public var body: some View {
         ScrollViewReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: self.spacing) {
+                HStack(spacing: 0) {
                     ForEach(self.tabs) { tab in
                         Button(action: { self.selection = tab.id }) {
                             self.content(tab)
                                 .padding(.horizontal, 8)
+                                .background(
+                                    GeometryReader { proxy in
+                                        Color.clear.anchorPreference(key: TabButtonFrameKey<TabItem.ID>.self, value: .bounds) {
+                                            [tab.id: $0]
+                                        }
+                                    }
+                                )
+                                .padding(.horizontal, self.spacing)
                         }
-                        .background(
-                            GeometryReader { proxy in
-                                Color.clear.anchorPreference(key: TabButtonFrameKey<TabItem.ID>.self, value: .bounds) {
-                                    [tab.id: $0]
-                                }
-                            }
-                        )
-                        .padding(.horizontal, 8)
                     }
                 }
             }
@@ -75,10 +79,18 @@ public struct InteractiveScrollingTabBar<TabItem: Identifiable, Content: View>: 
         .overlayPreferenceValue(TabButtonFrameKey.self) { value in
             GeometryReader { proxy in
                 if let (indicatorX, indicatorWidth) = self.indicatorPositionAndWidth(in: proxy, anchors: value) {
-                    Capsule()
-                        .fill(Color.accentColor)
-                        .frame(width: indicatorWidth, height: 3)
-                        .position(x: indicatorX, y: proxy.size.height - 1.5)
+                    switch self.indicatorPosition {
+                    case .bottom:
+                        Capsule()
+                            .fill(Color.accentColor)
+                            .frame(width: indicatorWidth, height: 3)
+                            .position(x: indicatorX, y: proxy.size.height - 1.5)
+                    case .top:
+                        Capsule()
+                            .fill(Color.accentColor)
+                            .frame(width: indicatorWidth, height: 3)
+                            .position(x: indicatorX, y: 1.5)
+                    }
                 }
             }
         }
@@ -117,7 +129,7 @@ fileprivate struct Tab: Identifiable {
     let title: String
 }
 
-#Preview {
+#Preview("bottom") {
     @Previewable @State var selectedID: Int? = 0
     
     let tabs = [
@@ -132,7 +144,11 @@ fileprivate struct Tab: Identifiable {
     
     InteractiveScrollingTabBar(
         selection: $selectedID,
-        interaction: nil,
+        interaction: .init(
+            currentIndex: selectedID ?? 0,
+            nextIndex: selectedID ?? 0,
+            fraction: 0
+        ),
         tabs: tabs,
         content: { item in
             Text(item.title)
@@ -140,4 +156,36 @@ fileprivate struct Tab: Identifiable {
                 .padding(.vertical)
         }
     )
+    .animation(.easeInOut, value: selectedID)
+}
+
+#Preview("top") {
+    @Previewable @State var selectedID: Int? = 0
+    
+    let tabs = [
+        Tab(id: 0, title: "Tab 1"),
+        Tab(id: 1, title: "Tab 2"),
+        Tab(id: 2, title: "Tab 3"),
+        Tab(id: 3, title: "Tab 4"),
+        Tab(id: 4, title: "Tab 5"),
+        Tab(id: 5, title: "Tab 6"),
+    ]
+    
+    
+    InteractiveScrollingTabBar(
+        selection: $selectedID,
+        interaction: .init(
+            currentIndex: selectedID ?? 0,
+            nextIndex: selectedID ?? 0,
+            fraction: 0
+        ),
+        indicatorPosition: .top,
+        tabs: tabs,
+        content: { item in
+            Text(item.title)
+                .font(.headline)
+                .padding(.vertical)
+        }
+    )
+    .animation(.easeInOut, value: selectedID)
 }
